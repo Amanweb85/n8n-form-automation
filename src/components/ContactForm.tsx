@@ -36,14 +36,14 @@ export default function ContactForm() {
 
         try {
             const res = await sendFormData(form)
-
             if (res.ok) {
                 setType("success")
                 setStatus("Message sent successfully!")
                 setForm({ name: "", email: "", message: "" })
             } else {
                 setType("error")
-                setStatus("Failed to send message.")
+                const data = await res.json()
+                setStatus(data.message)
             }
         } catch {
             setType("error")
@@ -61,7 +61,7 @@ export default function ContactForm() {
                     Contact Form
                 </h2>
 
-                {status && <Alert message={status} success={true} />}
+                {status && <Alert message={status} type={type} />}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
 
